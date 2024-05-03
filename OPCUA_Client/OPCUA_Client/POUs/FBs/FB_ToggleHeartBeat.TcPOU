@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_ToggleHeartBeat" Id="{74053b5c-ea6f-4eab-8b0d-b55da9e2bf2f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ToggleHeartBeat
+VAR_INPUT
+	I_TimeIntervalSecs : LREAL;
+END_VAR
+VAR_OUTPUT
+	O_Update : BOOL;
+END_VAR
+VAR
+	TON_LifeBitOff: TON;
+	TON_LifeBitOn: TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TON_LifeBitOn(IN:= NOT O_Update, PT:=LREAL_TO_TIME(I_TimeIntervalSecs*1000), Q=> , ET=> );
+IF TON_LifeBitOn.Q THEN
+	O_Update := TRUE;
+END_IF
+TON_LifeBitOff(IN:= O_Update , PT:=LREAL_TO_TIME(I_TimeIntervalSecs*1000) , Q=>, ET=> ); 
+IF TON_LifeBitOff.Q THEN
+	O_Update := FALSE;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ToggleHeartBeat">
+      <LineId Id="10" Count="6" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
