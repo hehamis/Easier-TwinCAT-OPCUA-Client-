@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="UA_GetNameSpaceIndexWrapper" Id="{bfe2eaec-80ee-46fd-93e6-c3ee92cb67ca}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK UA_GetNameSpaceIndexWrapper IMPLEMENTS I_OPCUA_GetNameSpaceIndex
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	uaGetNameSpaceIndex : UA_GetNameSpaceIndex;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{6482bda8-fa83-4352-8923-ebd6ac8df001}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute			: BOOL;
+	ConnectionHdl	: DWORD;
+	NamespaceUri	: STRING(MAX_STRING_LENGTH);
+	Timeout			: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	NamespaceIndex	: UINT;
+	Done			: BOOL;
+	Busy			: BOOL;
+	Error			: BOOL;
+	ErrorID			: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[uaGetNameSpaceIndex(Execute			:= ,
+                    ConnectionHdl	:= ,
+                    NamespaceUri	:= ,
+                    Timeout			:= ,
+					NamespaceIndex	=> ,
+                    Done			=> ,
+                    Busy			=> ,
+                    Error			=> ,
+                    ErrorID			=> );]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="UA_GetNameSpaceIndexWrapper">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="UA_GetNameSpaceIndexWrapper.start">
+      <LineId Id="17" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

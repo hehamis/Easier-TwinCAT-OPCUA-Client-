@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="UA_ConnectWrapper" Id="{99419b85-d4bf-4b2c-bdc6-398c4daf6560}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK UA_ConnectWrapper IMPLEMENTS I_OPCUA_Connect
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	uaConnect : UA_Connect;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{14decb79-d22a-4785-bd37-bad7aca342af}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute					: BOOL;
+	ServerUrl				: STRING(MAX_STRING_LENGTH);
+	SessionConnectInfo		: Tc3_PLCopen_OpcUa.ST_UASessionConnectInfo;
+	Timeout					: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	ConnectionHdl			: DWORD;
+	Done					: BOOL;
+	Busy					: BOOL;
+	Error					: BOOL;
+	ErrorID					: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[uaConnect(Execute					:= Execute,
+          ServerUrl				:= ServerUrl	,
+          SessionConnectInfo		:= SessionConnectInfo,
+          Timeout					:= Timeout,
+		  ConnectionHdl			=> ConnectionHdl,
+		  Done					=> Done,
+          Busy					=> Busy,
+          Error					=> Error,
+          ErrorID				=> ErrorID
+		  );]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="UA_ConnectWrapper">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="UA_ConnectWrapper.start">
+      <LineId Id="17" Count="0" />
+      <LineId Id="33" Count="2" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="38" Count="3" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

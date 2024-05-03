@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="UA_DisconnectWrapper" Id="{058e23e6-de7c-42c1-be6f-aae2d049649d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK UA_DisconnectWrapper IMPLEMENTS I_OPCUA_Disconnect
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	uaDisconnect : UA_Disconnect;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{14e71585-8a6f-4ba0-b4b2-3d032087d3a4}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute			: BOOL;
+	ConnectionHdl	: DWORD;
+	Timeout			: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[uaDisconnect(Execute			:= Execute,
+             ConnectionHdl	:= ConnectionHdl,
+             Timeout			:= Timeout,
+			 Done			=> Done,
+			 Busy			=> Busy,
+             Error			=> Error,
+             ErrorID 		=> ErrorID);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="UA_DisconnectWrapper">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="UA_DisconnectWrapper.start">
+      <LineId Id="15" Count="2" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="20" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
