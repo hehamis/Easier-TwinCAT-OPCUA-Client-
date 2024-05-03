@@ -41,6 +41,18 @@
     <Compile Include="POUs\FBs\FB_OPCUA_ReadOrWriteNode.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FBs\FB_ToggleHeartBeat.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Wrappers\UA_ConnectWrapper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Wrappers\UA_DisconnectWrapper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Wrappers\UA_GetNameSpaceIndexWrapper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\ITFs\I_OPCUA_ClientConnection.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -80,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="POUs\FBs" />
+    <Folder Include="POUs\FBs\Wrappers" />
     <Folder Include="POUs\ITFs" />
     <Folder Include="POUs\DUTs" />
     <Folder Include="POUs\Unit tests" />

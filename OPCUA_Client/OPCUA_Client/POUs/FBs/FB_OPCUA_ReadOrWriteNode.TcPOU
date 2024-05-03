@@ -9,44 +9,16 @@ VAR_OUTPUT
 	error : BOOL;
 END_VAR
 VAR
-	nameSpaceLocationIdentifierEx : STRING(MAX_STRING_LENGTH); 
-	fbUA_ConnectEx			: UA_Connect;
-	SessionConnectInfoEx	: ST_UASessionConnectInfo;
-	nConnectionHdl			: DWORD;
-//	clientVariableInfo	: __SYSTEM.VAR_INFO;
-	
-	fbUA_GetNamespaceIndex 	: UA_GetNamespaceIndex;
-	nNamespaceIndex			: UINT;
-	fbUA_NodeGetHandleList	: UA_NodeGetHandleList;
-	
-	NodeIDs					: ARRAY [1..nMaxNodeIDsInList] OF ST_UANodeID;
-	nNodeHdls				: ARRAY [1..nMaxNodeIDsInList] OF DWORD;
 
 	fbUA_Read			: UA_Read;
-	NodeIDCount				: UINT := 4;
-	NodeHdlCount			: UINT := 4; 
-	nIndexRangeCount		: UINT;
 	stNodeAddInfo			: ST_UANodeAdditionalInfo;
-	cbData					: UDINT; (* Bytes to be actually Read *)
 	cbData_R				: UDINT;
-	cbDataTotal				: UDINT; 
 	
-	fbUA_NodeReleaseHandleList	: UA_NodeReleaseHandleList;
-
-	fbUA_Disconnect		: UA_Disconnect;
-
 	iState		: INT;
-	bDone		: BOOL;
-	bBusy		: BOOL;
 	nErrorID	: DWORD;
-	node: INT;
 	dataAdd : PVOID;
 	lastErrorStep: INT;
 	readToggle : FB_ToggleHeartBeat;
-	//stReadListData			: ST_ReadDataList; // memory block must contain the Data[], NodeErrorIDs[], TimeStamps[] and cbData_R[]
-	nameSpaceUriEx: STRING(MAX_STRING_LENGTH);
-	serverURLex: STRING(MAX_STRING_LENGTH);
-	bError : BOOL;
 	Executing : BOOL;
 	writeStep : INT;
 	(* Declarations for UA_Write *)
@@ -55,18 +27,13 @@ VAR
 	(* Declarations for UA_NodeReleaseHandle *)
 	fbUA_NodeReleaseHandle : UA_NodeReleaseHandle;
 	
-	
 	(* Other declarations *) 
 	errorID : DWORD;	
 	clientVariablePrev : BYTE;
 	firstTimeWrite : BOOL;
-	variable: INT;
-	prepareStep: INT;
 		fbUA_NodeGetHandle : UA_NodeGetHandle;
 	NodeID : ST_UANodeID;
 	nNodeHdl : DWORD;
-//	error : BOOL;
-	//busy: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>

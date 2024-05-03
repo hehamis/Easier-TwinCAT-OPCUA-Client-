@@ -17,20 +17,6 @@ VAR
 	_iOPCUAconnect			: I_OPCUA_COnnect;
 	SessionConnectInfoEx	: ST_UASessionConnectInfo;
 	_iOPCUAgetNameSpaceIndex 	: I_OPCUA_GetNameSpaceIndex;
-//	nNamespaceIndex			: UINT;
-	(* Connection handle of an existing communication link (from UA_Connect)*)
-//	connectionHdl	: DWORD;	
-	(* Declarations for UA_NodeGetHandle *)
-	fbUA_NodeGetHandle : UA_NodeGetHandle;
-	NodeID : ST_UANodeID;
-	nNodeHdl : DWORD;
-	
-	(* Declarations for UA_Write *)
-	_iOPCUAwrite : UA_Write;
-	stNodeAddInfo : ST_UANodeAdditionalInfo;
-	
-	(* Declarations for UA_NodeReleaseHandle *)
-	fbUA_NodeReleaseHandle : UA_NodeReleaseHandle;
 	
 	(* Declarations for disconnect*)
 	_iOPCUAdisconnect		: I_OPCUA_Disconnect;
@@ -39,12 +25,8 @@ VAR
 	writeStep : INT;
 	errorID : DWORD;	
 	executing : BOOL;
-	clientVariablePrev : BYTE;
 	firstTimeWrite : BOOL;
 	serverURLex: STRING(MAX_STRING_LENGTH);
-	variable: INT;
-	prepareStep: INT;
-//	error : BOOL;
 	connectStep: INT;
 	disconnectStep: INT;
 	connectBusy: BOOL;
