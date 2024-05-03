@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="TEST_MAIN" Id="{6f1f9b14-cd50-4368-a31b-0aa59c1c9cf4}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM TEST_MAIN
+VAR
+	clientConnectionTest : FB_OPCUA_ClientConnection_Test;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TcUnit.RUN();]]></ST>
+    </Implementation>
+    <LineIds Name="TEST_MAIN">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

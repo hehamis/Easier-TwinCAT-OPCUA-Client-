@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_UAconnectMock_Success" Id="{8b7f916b-1dd5-4457-a43a-10e9e68a92ec}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UAconnectMock_Success IMPLEMENTS I_OPCUA_Connect
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{275e55f8-ee51-47ac-b6fb-7e9596ac938d}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute	: BOOL;
+	ServerUrl	: STRING(MAX_STRING_LENGTH);
+	SessionConnectInfo	: Tc3_PLCopen_OpcUa.ST_UASessionConnectInfo;
+	Timeout	: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	ConnectionHdl	: DWORD;
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF execute THEN
+	done := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_UAconnectMock_Success">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_UAconnectMock_Success.start">
+      <LineId Id="17" Count="0" />
+      <LineId Id="33" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

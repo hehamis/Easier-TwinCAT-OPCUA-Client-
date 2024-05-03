@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <Itf Name="I_OPCUA_GetNameSpaceIndex" Id="{90937590-b023-4894-8f42-1660aa9011c7}">
+    <Declaration><![CDATA[INTERFACE I_OPCUA_GetNameSpaceIndex
+]]></Declaration>
+    <Method Name="start" Id="{c6324c39-e110-48e8-96af-63f9cd8a03d2}">
+      <Declaration><![CDATA[METHOD start : BOOL
+VAR_INPUT
+    Execute       : BOOL;
+    ConnectionHdl : DWORD;
+    NamespaceUri  : STRING(MAX_STRING_LENGTH);
+    Timeout       : TIME := DEFAULT_ADS_TIMEOUT; 
+END_VAR
+VAR_OUTPUT
+    NamespaceIndex : UINT;
+    Done           : BOOL;
+    Busy           : BOOL;
+    Error          : BOOL;
+    ErrorID        : DWORD;
+END_VAR ]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

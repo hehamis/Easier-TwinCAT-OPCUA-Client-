@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <Itf Name="I_OPCUA_ClientConnection" Id="{40dc88b8-dd94-40d4-b5bf-fa60cff14c12}">
+    <Declaration><![CDATA[INTERFACE I_OPCUA_ClientConnection
+]]></Declaration>
+    <Method Name="connect" Id="{32b16a23-1f4b-41dd-aee5-7008a9ed5177}">
+      <Declaration><![CDATA[METHOD connect : BOOL
+VAR_INPUT
+	(* server address *)
+	serverUrl 		: STRING(MAX_STRING_LENGTH); 
+	(* namespace uri*)
+	namespaceUri	: STRING(MAX_STRING_LENGTH);
+	(* Location of data in namespace *)
+	nameSpaceLocationIdentifier : STRING(MAX_STRING_LENGTH);
+	(* Session connect info struct *)
+	sessionConnectInfo	: ST_UASessionConnectInfo;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="disconnect" Id="{fcb9175d-a5ad-45e1-bd3d-54a5591516ca}">
+      <Declaration><![CDATA[METHOD disconnect : BOOL
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

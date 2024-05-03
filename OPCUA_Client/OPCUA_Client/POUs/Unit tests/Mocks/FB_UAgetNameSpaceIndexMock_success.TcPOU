@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_UAgetNameSpaceIndexMock_success" Id="{1dff67b7-b8b7-404b-8228-95edcb450714}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UAgetNameSpaceIndexMock_success IMPLEMENTS I_OPCUA_GetNameSpaceIndex
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{113eaf49-9c02-4d40-be9e-146956ae69ea}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute	: BOOL;
+	ConnectionHdl	: DWORD;
+	NamespaceUri	: STRING(MAX_STRING_LENGTH);
+	Timeout	: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	NamespaceIndex	: UINT;
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF execute THEN
+	done := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_UAgetNameSpaceIndexMock_success">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_UAgetNameSpaceIndexMock_success.start">
+      <LineId Id="18" Count="1" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <Itf Name="I_OPCUA_Connect" Id="{6a688e78-a1c4-438f-a51a-56d256578318}">
+    <Declaration><![CDATA[INTERFACE I_OPCUA_Connect
+]]></Declaration>
+    <Method Name="start" Id="{35e2e35e-ec82-4e4a-bcbe-c76ff647fb80}">
+      <Declaration><![CDATA[METHOD start : BOOL
+VAR_INPUT
+    Execute            : BOOL;
+    ServerUrl          : STRING(MAX_STRING_LENGTH);
+    SessionConnectInfo : ST_UASessionConnectInfo;     
+    Timeout            : TIME := DEFAULT_ADS_TIMEOUT; 
+END_VAR
+VAR_OUTPUT
+    ConnectionHdl : DWORD;
+    Done          : BOOL;
+    Busy          : BOOL;
+    Error         : BOOL;
+    ErrorID       : DWORD;
+END_VAR ]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

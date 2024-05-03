@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_OPCUA_ClientConnection_Test" Id="{7218b254-8f00-48b1-9085-e3c198cc35e1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_OPCUA_ClientConnection_Test  EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[errorShouldntBeActiveWhenConnectionIsSuccesful();
+errorShouldBeActiveIfConnectingFails();]]></ST>
+    </Implementation>
+    <Method Name="errorShouldBeActiveIfConnectingFails" Id="{1c941d56-b399-430b-850d-b8e299923506}">
+      <Declaration><![CDATA[METHOD errorShouldBeActiveIfConnectingFails
+VAR
+	connect : FB_UAconnectMock_Failure;
+	disconnect : FB_UAdisconnectMock_success;
+	getNameSpaceIndex : FB_UAgetNameSpaceIndexMock_success;
+	connection : FB_OPCUA_ClientConnection(iOPCUAconnect := connect,
+										iOPCUAdisconnect := disconnect,
+										iOPCUAgetNameSpaceIndex := getNameSpaceIndex);
+	sessionCOnnectInfo : ST_UASessionConnectInfo;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('errorShouldBeActiveIfConnectingFails');
+	connection.connect(serverUrl := '11.11.11.11',
+				namespaceUri := 'namespace',
+				nameSpaceLocationIdentifier := 'GVL_ident' ,
+				sessionConnectInfo := SessionConnectInfo
+				);
+	assertEquals_BOOL(Expected := TRUE, Actual := connection.error, Message := 'Error not active when connection failed');
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="errorShouldntBeActiveWhenConnectionIsSuccesful" Id="{4f176e35-e4f3-4ca0-9de7-40f0413bc697}">
+      <Declaration><![CDATA[METHOD errorShouldntBeActiveWhenConnectionIsSuccesful
+VAR
+	connect : FB_UAconnectMock_Success;
+	disconnect : FB_UAdisconnectMock_success;
+	getNameSpaceIndex : FB_UAgetNameSpaceIndexMock_success;
+	connection : FB_OPCUA_ClientConnection(iOPCUAconnect := connect,
+										iOPCUAdisconnect := disconnect,
+										iOPCUAgetNameSpaceIndex := getNameSpaceIndex);
+	sessionCOnnectInfo : ST_UASessionConnectInfo;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('errorShouldntBeActive');
+	connection.connect(serverUrl := '11.11.11.11',
+				namespaceUri := 'namespace',
+				nameSpaceLocationIdentifier := 'GVL_ident' ,
+				sessionConnectInfo := SessionConnectInfo
+				);
+	assertEquals_BOOL(Expected := FALSE, Actual := connection.error, Message := 'Error active even when connection succeeced');
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_OPCUA_ClientConnection_Test">
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OPCUA_ClientConnection_Test.errorShouldBeActiveIfConnectingFails">
+      <LineId Id="15" Count="6" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OPCUA_ClientConnection_Test.errorShouldntBeActiveWhenConnectionIsSuccesful">
+      <LineId Id="5" Count="0" />
+      <LineId Id="12" Count="3" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

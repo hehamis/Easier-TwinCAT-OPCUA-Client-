@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <Itf Name="I_OPCUA_Disconnect" Id="{64f61633-4c3c-4f0f-8db9-d6021f05b6db}">
+    <Declaration><![CDATA[INTERFACE I_OPCUA_Disconnect
+]]></Declaration>
+    <Method Name="start" Id="{08488aa1-4d81-4a4d-86b9-5bacc9a0a85a}">
+      <Declaration><![CDATA[METHOD start : BOOL
+VAR_INPUT
+    Execute           : BOOL;
+    ConnectionHdl     : DWORD;     
+    Timeout           : TIME := DEFAULT_ADS_TIMEOUT; 
+END_VAR 
+VAR_OUTPUT
+    Done        : BOOL;
+    Busy        : BOOL;
+    Error       : BOOL;
+    ErrorID     : DWORD;
+END_VAR 
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>
