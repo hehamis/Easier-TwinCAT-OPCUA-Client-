@@ -14,12 +14,12 @@ END_VAR
 VAR
 	nameSpaceLocationIdentifierEx : STRING(MAX_STRING_LENGTH); 
 	NamespaceUriEx : STRING(MAX_STRING_LENGTH); 
-	_iOPCUAconnect			: I_OPCUA_COnnect;
+	_iOPCUA_Connect			: I_OPCUA_COnnect;
 	SessionConnectInfoEx	: ST_UASessionConnectInfo;
-	_iOPCUAgetNameSpaceIndex 	: I_OPCUA_GetNameSpaceIndex;
+	_iOPCUA_GetNameSpaceIndex 	: I_OPCUA_GetNameSpaceIndex;
 	
 	(* Declarations for disconnect*)
-	_iOPCUAdisconnect		: I_OPCUA_Disconnect;
+	_iOPCUA_Disconnect		: I_OPCUA_Disconnect;
 	
 	(* Other declarations *) 
 	writeStep : INT;
@@ -69,7 +69,7 @@ CASE connectStep OF
 		serverURlex := serverUrl;
 		nameSpaceLocationIdentifierEx := nameSpaceLocationIdentifier;
 		SessionConnectInfoEx.sApplicationName := 'asddddd';
-		_iOPCUAconnect.start(
+		_iOPCUA_Connect.start(
 			Execute				:= TRUE,
 			ServerURL			:= serverURLex,
 			SessionConnectInfo  := SessionConnectInfoEx,
@@ -80,7 +80,7 @@ CASE connectStep OF
 			errorID				=> connectErrorID
 		);
 		IF NOT connectBusy THEN
-			_iOPCUAconnect.start(Execute := FALSE,
+			_iOPCUA_Connect.start(Execute := FALSE,
 								ServerURL			:= serverURLex,
 								SessionConnectInfo  := SessionConnectInfoEx,
 								Timeout				:= T#2M,
@@ -98,7 +98,7 @@ CASE connectStep OF
 			END_IF
 		END_IF
 	1:
-		_iOPCUAgetNameSpaceIndex.start(
+		_iOPCUA_GetNameSpaceIndex.start(
 										Execute			:= TRUE,
 										ConnectionHdl	:= ConnectionHdl,
 										NamespaceUri	:= NamespaceUriEx,
@@ -111,7 +111,7 @@ CASE connectStep OF
 	
 	
 		IF NOT getNameSpaceIndexBusy THEN
-			_iOPCUAgetNameSpaceIndex.start(Execute := FALSE,
+			_iOPCUA_GetNameSpaceIndex.start(Execute := FALSE,
 											ConnectionHdl	:= ConnectionHdl,
 											NamespaceUri	:= NamespaceUriEx,
 											TimeOut 		:= T#5S,
@@ -145,7 +145,7 @@ END_VAR]]></Declaration>
 		error := FALSE;
 		disconnectDone := FALSE;
 		connectStep := 0;
-		_iOPCUAdisconnect.start(
+		_iOPCUA_Disconnect.start(
 							Execute			:= TRUE,
 							ConnectionHdl	:= connectionHdl,
 							timeOut			:= T#5S,
@@ -155,7 +155,7 @@ END_VAR]]></Declaration>
 						);
 	
 		IF NOT disconnectBusy THEN
-			_iOPCUAdisconnect.start(Execute := FALSE,
+			_iOPCUA_Disconnect.start(Execute := FALSE,
 									ConnectionHdl	:= connectionHdl,
 									timeOut			:= T#5S
 									);
@@ -193,9 +193,9 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_iOPCUAconnect := iOPCUAconnect;
-_iOPCUAdisconnect := iOPCUAdisconnect;
-_iOPCUAgetNameSpaceIndex := iOPCUAgetNameSpaceIndex;]]></ST>
+        <ST><![CDATA[_iOPCUA_Connect := iOPCUAconnect;
+_iOPCUA_Disconnect := iOPCUAdisconnect;
+_iOPCUA_GetNameSpaceIndex := iOPCUAgetNameSpaceIndex;]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_OPCUA_ClientConnection">

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <Itf Name="I_OPCUA_NodeGetHandle" Id="{3d2ebc4d-3aa1-4e39-9753-516fea065d45}">
+    <Declaration><![CDATA[INTERFACE I_OPCUA_NodeGetHandle
+]]></Declaration>
+    <Method Name="start" Id="{031056aa-9ef3-4a25-8b9a-d2f2930a2b4c}">
+      <Declaration><![CDATA[METHOD start : BOOL
+VAR_INPUT
+    Execute       : BOOL;
+    ConnectionHdl : DWORD;
+    NodeID        : ST_UANodeID;
+    Timeout       : TIME := DEFAULT_ADS_TIMEOUT; 
+END_VAR 
+VAR_OUTPUT
+    NodeHdl     : DWORD;
+    Done        : BOOL;
+    Busy        : BOOL;
+    Error       : BOOL;
+    ErrorID     : DWORD;
+END_VAR ]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

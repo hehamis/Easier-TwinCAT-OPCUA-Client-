@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_OPCUA_WorkOnNode" Id="{0e3c7aeb-71ed-4c55-86bf-e2c7680b355d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_OPCUA_WorkOnNode IMPLEMENTS I_OPCUA_WorkOnNode
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	busy: BOOL;
+	error : BOOL;
+END_VAR
+VAR
+
+	_iOPCUA_Read			: I_OPCUA_Read;
+	stNodeAddInfo			: ST_UANodeAdditionalInfo;
+	cbData_R				: UDINT;
+	
+	iState		: INT;
+	nErrorID	: DWORD;
+	dataAdd : PVOID;
+	lastErrorStep: INT;
+	readToggle : FB_ToggleHeartBeat;
+	Executing : BOOL;
+	writeStep : INT;
+	(* Declarations for UA_Write *)
+	_iOPCUA_Write : I_OPCUA_Write; 
+	
+	(* Declarations for UA_NodeReleaseHandle *)
+	_iOPCUA_NodeReleaseHandle : I_OPCUA_NodeReleaseHandle;
+	
+	(* Other declarations *) 
+	errorID : DWORD;	
+	clientVariablePrev : BYTE;
+	firstTimeWrite : BOOL;
+	_iOPCUA_NodeGetHandle : I_OPCUA_NodeGetHandle;
+	NodeID : ST_UANodeID;
+	nNodeHdl : DWORD;
+	NodeGetHandleBusy: BOOL;
+	NodeGetHandleError: BOOL;
+	NodeGetHandleErrorID: DWORD;
+	readBusy: BOOL;
+	readError: BOOL;
+	readErrorID: DWORD;
+	nodeReleaseHandleBusy: BOOL;
+	nodeReleaseHandleError: BOOL;
+	nodeReleaseHandleErrorID: DWORD;
+	writeBusy: BOOL;
+	writeError: BOOL;
+	writeErrorID: DWORD;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{e3f5c172-5b53-41bb-83ce-9b70c20f0d0c}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	iOPCUA_Write				: I_OPCUA_Write;
+	iOPCUA_Read					: I_OPCUA_Read;
+	iOPCUA_NodeReleaseHandle 	: I_OPCUA_NodeReleaseHandle;
+	iOPCUA_NodeGetHandle 		: I_OPCUA_NodeGetHandle;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_iOPCUA_Write	:= iOPCUA_Write;		
+_iOPCUA_Read		:= iOPCUA_Read	;		
+_iOPCUA_NodeReleaseHandle := iOPCUA_NodeReleaseHandle;
+_iOPCUA_NodeGetHandle 	:= iOPCUA_NodeGetHandle 	;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="read" Id="{03c3b3f3-09be-48e8-a71a-d9f38d3c1c07}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD read : BOOL
+VAR_INPUT
+	{attribute 'anytypeclass' := 'ANY'}
+	clientVariable	: ANY;
+	(* VAR_INFO of the target variable (from GVL_OPC)*)
+	clientVariableInfo	: __SYSTEM.VAR_INFO;
+	serverNodeIdentifier	: STRING;
+	nameSpaceLocationIdentifierEx	: STRING(MAX_STRING_LENGTH);
+	ConnectionHdl	: DWORD;
+	nNamespaceIndex			: UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE istate OF
+0: 
+		error := FALSE;
+		nNodeHdl :=0;
+		Executing := TRUE;
+		iState := iState + 1;
+	
+1:	(* Get Node Handle *)
+	
+		NodeID.eIdentifierType := eUAIdentifierType_String;
+		NodeID.nNamespaceIndex := nNamespaceIndex;
+		NodeID.sIdentifier := CONCAT(nameSpaceLocationIdentifierEx,serverNodeIdentifier);
+		_iOPCUA_NodeGetHandle.start(
+									Execute := TRUE,
+									ConnectionHdl := connectionHdl,
+									NodeID := NodeID,
+									Timeout := T#5S,
+									NodeHdl => nNodeHdl,
+									Busy => NodeGetHandleBusy,
+									Error => NodeGetHandleError,
+									ErrorID => NodeGetHandleErrorID
+									);
+		IF NOT NodeGetHandleBusy THEN
+		  _iOPCUA_NodeGetHandle.start(Execute := FALSE,
+										ConnectionHdl := connectionHdl,
+										NodeID := NodeID,
+										Timeout := T#5S
+										);
+		  IF NOT NodeGetHandleError THEN
+			istate := istate + 1;
+		  ELSE
+			errorID := NodeGetHandleErrorID;
+			istate := 3;
+		  END_IF
+		END_IF
+
+	
+2: 	(* UA_Read *)
+
+	dataAdd := ADR(clientVariable);
+	_iOPCUA_Read.start(
+						Execute := TRUE,
+						ConnectionHdl := connectionHdl,
+						NodeHdl := nNodeHdl,
+						cbData := SIZEOF(clientVariable),//clientVariableInfo.BitSize,
+						stNodeAddInfo 	:= stNodeAddInfo,
+						pVariable :=clientVariableInfo.ByteAddress,
+						Timeout := T#5S,
+						busy => readBusy,
+						error => readError,
+						errorID => readErrorID
+						);
+
+	IF NOT readBusy THEN
+			_iOPCUA_Read.start( Execute := FALSE, 
+						ConnectionHdl := connectionHdl,
+						NodeHdl := nNodeHdl,
+						cbData := SIZEOF(clientVariable),//clientVariableInfo.BitSize,
+						stNodeAddInfo 	:= stNodeAddInfo,
+						pVariable :=clientVariableInfo.ByteAddress,
+						Timeout := T#5S,
+						cbData_R => cbData_R);
+
+		IF NOT readError THEN
+			iState 		:= 3;
+		ELSE
+			lastErrorStep := 2;
+			nErrorID	:= readErrorId;
+			iState 		:= 3; (* idle *)
+		END_IF
+	END_IF
+
+
+3:	(* Release Node Handle *)
+		_iOPCUA_NodeReleaseHandle.start(
+			Execute			:= TRUE,
+			ConnectionHdl	:= ConnectionHdl,
+			NodeHdl			:= nNodeHdl,
+			Timeout := T#5S,
+			busy => nodeReleaseHandleBusy,
+			error => nodeReleaseHandleError,
+			errorID => nodeReleaseHandleErrorID
+		);
+	
+		IF NOT nodeReleaseHandleBusy THEN
+			_iOPCUA_NodeReleaseHandle.start(Execute := FALSE,
+											ConnectionHdl	:= ConnectionHdl,
+											NodeHdl			:= nNodeHdl,
+											Timeout := T#5S
+											);
+	
+			IF NOT nodeReleaseHandleError THEN
+				Executing := FALSE;
+				istate := 0;
+			ELSE
+				error := TRUE;
+				errorID	:= nodeReleaseHandleErrorID;
+				istate 	:= 0; (* idle *)
+			END_IF
+		END_IF
+END_CASE
+busy := Executing;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="write" Id="{64b5c044-7dd9-4728-a1be-b684ca04e6b0}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD write : BOOL
+VAR_INPUT
+	{attribute 'anytypeclass' := 'ANY'}
+	clientVariable	: ANY;
+	(* VAR_INFO of the target variable (from GVL_OPC)*)
+	clientVariableInfo	: __SYSTEM.VAR_INFO;
+	serverNodeIdentifier	: STRING;
+	nameSpaceLocationIdentifierEx	: STRING(MAX_STRING_LENGTH);
+	connectionHdl: DWORD;
+	nNamespaceIndex			: UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE writeStep OF
+	
+	0:
+		error := FALSE;
+		IF clientVariable.pValue^ <> clientVariablePrev OR NOT firstTimeWrite THEN
+			Executing := TRUE;
+			clientVariablePrev := clientVariable.pValue^;
+			writeStep := 1;
+		END_IF
+	
+	  1: 
+		(* UA_NodeGetHandle *)
+		NodeID.eIdentifierType := eUAIdentifierType_String;
+		NodeID.nNamespaceIndex := nNamespaceIndex;
+		NodeID.sIdentifier := CONCAT(nameSpaceLocationIdentifierEx,serverNodeIdentifier);
+		_iOPCUA_NodeGetHandle.start(
+									Execute := TRUE,
+									ConnectionHdl := connectionHdl,
+									NodeID := NodeID,
+									Timeout := T#5S,
+									NodeHdl => nNodeHdl,
+									Busy => nodeGetHandleBusy,
+									Error => nodeGetHandleError,
+									ErrorID => nodeGetHandleErrorID
+									
+									);
+		IF NOT nodeGetHandleBusy THEN
+		  _iOPCUA_NodeGetHandle.start(Execute := FALSE,
+									ConnectionHdl := connectionHdl,
+									NodeID := NodeID,
+									Timeout := T#5S,);
+		  IF NOT nodeGetHandleError THEN
+			writeStep := writeStep + 1;
+		  ELSE
+			errorID := nodeGetHandleErrorID;
+			writeStep := 2;
+		  END_IF
+		END_IF
+	  2: (* UA_Write *)
+		_iOPCUA_Write.start(
+							Execute := TRUE,
+							ConnectionHdl := connectionHdl,
+							NodeHdl := nNodeHdl,
+							stNodeAddInfo := stNodeAddInfo,
+							cbData := clientVariableInfo.BitSize,
+							pVariable := clientVariableInfo.ByteAddress,
+							Timeout := T#5S,
+							busy => writeBusy,
+							error => writeError,
+							errorID => writeErrorID
+							);
+		IF NOT writeBusy THEN
+		  _iOPCUA_Write.start(
+								Execute := FALSE,
+								ConnectionHdl := connectionHdl,
+								NodeHdl := nNodeHdl,
+								stNodeAddInfo := stNodeAddInfo,
+								cbData := clientVariableInfo.BitSize,
+								pVariable := clientVariableInfo.ByteAddress,
+								Timeout := T#5S );
+
+		  IF NOT writeError THEN
+				writeStep := 3;
+		  ELSE
+			//Executing := FALSE;
+			error := TRUE;
+			errorID := writeErrorID;
+			writeStep := 3;
+		  END_IF
+		END_IF
+	3:	(* Release Node Handle *)
+		_iOPCUA_NodeReleaseHandle.start(
+			Execute			:= TRUE,
+			ConnectionHdl	:= ConnectionHdl,
+			NodeHdl			:= nNodeHdl,
+			TimeOut			:= T#5S,
+			Busy			=> nodeReleaseHandleBusy,
+			Error			=> nodeReleaseHandleError,
+			ErrorID			=> nodeReleaseHandleErrorID
+		);
+	
+		IF NOT nodeReleaseHandleBusy THEN
+			_iOPCUA_NodeReleaseHandle.start(Execute := FALSE,
+											ConnectionHdl	:= ConnectionHdl,
+											NodeHdl			:= nNodeHdl,
+											TimeOut			:= T#5S
+												);
+	
+			IF NOT nodeReleaseHandleError THEN
+				firstTimeWrite := TRUE;
+				Executing := FALSE;
+				writeStep := 0;
+			ELSE
+				error := TRUE;
+				errorID	:= nodeReleaseHandleErrorID;
+				writeStep 	:= 0; (* idle *)
+			END_IF
+		END_IF
+END_CASE
+busy := Executing ;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_OPCUA_WorkOnNode">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OPCUA_WorkOnNode.FB_init">
+      <LineId Id="7" Count="0" />
+      <LineId Id="12" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_OPCUA_WorkOnNode.read">
+      <LineId Id="23" Count="1" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="36" Count="2" />
+      <LineId Id="116" Count="6" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="208" Count="2" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="124" Count="1" />
+      <LineId Id="205" Count="2" />
+      <LineId Id="204" Count="0" />
+      <LineId Id="126" Count="2" />
+      <LineId Id="131" Count="2" />
+      <LineId Id="59" Count="9" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="211" Count="3" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="222" Count="4" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="80" Count="1" />
+      <LineId Id="84" Count="1" />
+      <LineId Id="87" Count="7" />
+      <LineId Id="135" Count="3" />
+      <LineId Id="227" Count="3" />
+      <LineId Id="139" Count="3" />
+      <LineId Id="232" Count="1" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="143" Count="4" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="150" Count="2" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="155" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OPCUA_WorkOnNode.write">
+      <LineId Id="25" Count="2" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="30" Count="3" />
+      <LineId Id="35" Count="7" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="156" Count="2" />
+      <LineId Id="133" Count="1" />
+      <LineId Id="44" Count="1" />
+      <LineId Id="160" Count="1" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="46" Count="2" />
+      <LineId Id="51" Count="4" />
+      <LineId Id="57" Count="6" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="148" Count="1" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="64" Count="2" />
+      <LineId Id="151" Count="4" />
+      <LineId Id="67" Count="2" />
+      <LineId Id="74" Count="12" />
+      <LineId Id="136" Count="3" />
+      <LineId Id="87" Count="3" />
+      <LineId Id="142" Count="1" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="91" Count="1" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="93" Count="2" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="98" Count="4" />
+      <LineId Id="22" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
