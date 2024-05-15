@@ -75,7 +75,8 @@ VAR_INPUT
 	{attribute 'anytypeclass' := 'ANY'}
 	clientVariable	: ANY;
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
-	clientVariableInfo	: __SYSTEM.VAR_INFO;
+	//clientVariableInfo	: __SYSTEM.VAR_INFO;
+	clientVariableAddress : PVOID;
 	serverNodeIdentifier	: STRING;
 	nameSpaceLocationIdentifierEx	: STRING(MAX_STRING_LENGTH);
 	ConnectionHdl	: DWORD;
@@ -87,8 +88,8 @@ END_VAR
 0: 
 		error := FALSE;
 		nNodeHdl :=0;
-		Executing := TRUE;
 		iState := iState + 1;
+		Executing := TRUE;
 	
 1:	(* Get Node Handle *)
 	
@@ -129,11 +130,12 @@ END_VAR
 						NodeHdl := nNodeHdl,
 						cbData := SIZEOF(clientVariable),//clientVariableInfo.BitSize,
 						stNodeAddInfo 	:= stNodeAddInfo,
-						pVariable :=clientVariableInfo.ByteAddress,
+						pVariable :=clientVariableAddress,//clientVariableInfo.ByteAddress,
 						Timeout := T#5S,
 						busy => readBusy,
 						error => readError,
-						errorID => readErrorID
+						errorID => readErrorID,
+						cbData_R => cbData_R
 						);
 
 	IF NOT readBusy THEN
@@ -142,7 +144,7 @@ END_VAR
 						NodeHdl := nNodeHdl,
 						cbData := SIZEOF(clientVariable),//clientVariableInfo.BitSize,
 						stNodeAddInfo 	:= stNodeAddInfo,
-						pVariable :=clientVariableInfo.ByteAddress,
+						pVariable :=clientVariableAddress,//clientVariableInfo.ByteAddress,
 						Timeout := T#5S,
 						cbData_R => cbData_R);
 
@@ -194,7 +196,8 @@ VAR_INPUT
 	{attribute 'anytypeclass' := 'ANY'}
 	clientVariable	: ANY;
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
-	clientVariableInfo	: __SYSTEM.VAR_INFO;
+	//clientVariableInfo	: __SYSTEM.VAR_INFO;
+	clientVariableAddress	: PVOID;
 	serverNodeIdentifier	: STRING;
 	nameSpaceLocationIdentifierEx	: STRING(MAX_STRING_LENGTH);
 	connectionHdl: DWORD;
@@ -246,8 +249,8 @@ END_VAR
 							ConnectionHdl := connectionHdl,
 							NodeHdl := nNodeHdl,
 							stNodeAddInfo := stNodeAddInfo,
-							cbData := clientVariableInfo.BitSize,
-							pVariable := clientVariableInfo.ByteAddress,
+							cbData := SIZEOF(clientVariable),//clientVariableInfo.BitSize,
+							pVariable := clientVariableAddress,//clientVariableInfo.ByteAddress,
 							Timeout := T#5S,
 							busy => writeBusy,
 							error => writeError,
@@ -259,8 +262,8 @@ END_VAR
 								ConnectionHdl := connectionHdl,
 								NodeHdl := nNodeHdl,
 								stNodeAddInfo := stNodeAddInfo,
-								cbData := clientVariableInfo.BitSize,
-								pVariable := clientVariableInfo.ByteAddress,
+								cbData := SIZEOF(clientVariable), //clientVariableInfo.BitSize,
+								pVariable := clientVariableAddress,//clientVariableInfo.ByteAddress,
 								Timeout := T#5S );
 
 		  IF NOT writeError THEN
@@ -315,8 +318,8 @@ busy := Executing ;]]></ST>
       <LineId Id="23" Count="1" />
       <LineId Id="175" Count="0" />
       <LineId Id="160" Count="0" />
+      <LineId Id="247" Count="0" />
       <LineId Id="154" Count="0" />
-      <LineId Id="32" Count="0" />
       <LineId Id="36" Count="2" />
       <LineId Id="116" Count="6" />
       <LineId Id="203" Count="0" />
@@ -333,6 +336,7 @@ busy := Executing ;]]></ST>
       <LineId Id="188" Count="0" />
       <LineId Id="71" Count="0" />
       <LineId Id="211" Count="3" />
+      <LineId Id="248" Count="0" />
       <LineId Id="72" Count="1" />
       <LineId Id="156" Count="0" />
       <LineId Id="158" Count="0" />

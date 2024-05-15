@@ -8,7 +8,8 @@
 VAR_INPUT
 	clientVariable	: ANY;
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
-	clientVariableInfo	: __SYSTEM.VAR_INFO;
+	//clientVariableInfo	: __SYSTEM.VAR_INFO;
+	clientVariableAddress	: PVOID;
 	serverNodeIdentifier	: STRING;
 	nameSpaceLocationIdentifierEx : STRING(MAX_STRING_LENGTH);
 	connectionHdl : DWORD;
@@ -21,7 +22,8 @@ END_VAR
 VAR_INPUT
 	clientVariable	: ANY;
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
-	clientVariableInfo	: __SYSTEM.VAR_INFO;
+	//clientVariableInfo	: __SYSTEM.VAR_INFO;
+	clientVariableAddress	: PVOID;
 	serverNodeIdentifier	: STRING;
 	nameSpaceLocationIdentifierEx : STRING(MAX_STRING_LENGTH);
 	connectionHdl : DWORD;
