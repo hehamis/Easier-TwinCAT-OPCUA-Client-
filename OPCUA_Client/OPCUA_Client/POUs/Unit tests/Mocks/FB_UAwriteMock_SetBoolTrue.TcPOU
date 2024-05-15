@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_UAwriteMock_SetBoolTrue" Id="{dd5fe2ba-512b-4b30-973b-0f2d77fac84c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UAwriteMock_SetBoolTrue IMPLEMENTS I_OPCUA_Write
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{dde4d7e4-8bc2-4844-805d-7436a8fcc762}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute	: BOOL;
+	ConnectionHdl	: DWORD;
+	NodeHdl	: DWORD;
+	stNodeAddInfo	: Tc3_PLCopen_OpcUa.ST_UANodeAdditionalInfo;
+	pVariable	: PVOID;
+	cbData	: UDINT;
+	Timeout	: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_UAwriteMock_SetBoolTrue">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_UAwriteMock_SetBoolTrue.start">
+      <LineId Id="19" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -3,14 +3,33 @@
   <POU Name="TEST_MAIN" Id="{6f1f9b14-cd50-4368-a31b-0aa59c1c9cf4}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM TEST_MAIN
 VAR
-	clientConnectionTest : FB_OPCUA_ClientConnection_Test;
+	clientConnectionTest 	: FB_OPCUA_ClientConnection_Test;
+	workOnNodeTest			: FB_OPCUA_WorkOnNode_Test;
+	startTest: BOOL;
+	testBool : BOOL;
+	value: usint;
+	cbData: UDINT;
+		opcUAreadList_BOOL: ST_OPCUA_NodeVariablePair_BOOL := (clientvariable := testBool, 
+															serverNodeIdentifier := 'booleantoread'//,
+															);//clientVariableInfo := __VARINFO(THIS^.opcUAreadList_BOOL));
+	testinfo : PVOID;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[TcUnit.RUN();]]></ST>
+      <ST><![CDATA[IF startTest THEN
+	TcUnit.RUN();
+END_IF
+MEMSET(ADR(opcUAreadList_BOOL.clientVariable),value,SIZEOF(cbData));
+testinfo := ADR('cbdata');
+]]></ST>
     </Implementation>
     <LineIds Name="TEST_MAIN">
+      <LineId Id="12" Count="0" />
       <LineId Id="2" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="8" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

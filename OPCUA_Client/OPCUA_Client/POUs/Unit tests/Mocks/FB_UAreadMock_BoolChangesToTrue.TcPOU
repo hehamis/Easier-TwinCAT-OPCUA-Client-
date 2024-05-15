@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_UAreadMock_BoolChangesToTrue" Id="{cbba6015-d072-4f3f-9063-45e2840aa17c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UAreadMock_BoolChangesToTrue IMPLEMENTS I_OPCUA_Read
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{0b163bc4-4f9a-4ca0-a6f6-219381902035}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute	: BOOL;
+	ConnectionHdl	: DWORD;
+	NodeHdl	: DWORD;
+	stNodeAddInfo	: Tc3_PLCopen_OpcUa.ST_UANodeAdditionalInfo;
+	pVariable	: PVOID;
+	cbData	: UDINT;
+	Timeout	: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: UDINT;
+	cbData_R	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF execute THEN
+	MEMSET(pVariable,1,SIZEOF(cbData));
+	done := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_UAreadMock_BoolChangesToTrue">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_UAreadMock_BoolChangesToTrue.start">
+      <LineId Id="20" Count="1" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="22" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

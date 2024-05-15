@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_UAnodeReleaseHandleMock_Success" Id="{88666360-9187-4fe4-99d0-ef8b00f9460c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UAnodeReleaseHandleMock_Success IMPLEMENTS I_OPCUA_NodeReleaseHandle
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{0ccd4082-9455-41df-a361-fbc64e269132}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+    Execute       : BOOL;
+    ConnectionHdl : DWORD;
+    NodeHdl       : DWORD;
+    Timeout       : TIME := DEFAULT_ADS_TIMEOUT; 
+END_VAR
+VAR_OUTPUT
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF execute THEN
+	done := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_UAnodeReleaseHandleMock_Success">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_UAnodeReleaseHandleMock_Success.start">
+      <LineId Id="19" Count="2" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

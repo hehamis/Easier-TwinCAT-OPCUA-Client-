@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_UAnodeGetHandleMock_Success" Id="{d9d74755-c9d0-4fc7-ae4a-d2b9cb232dbb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UAnodeGetHandleMock_Success IMPLEMENTS I_OPCUA_NodeGetHandle
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{5a8b01e0-9139-49ae-9085-df2e2f7ac3de}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute	: BOOL;
+	ConnectionHdl	: DWORD;
+	NodeID	: Tc3_PLCopen_OpcUa.ST_UANodeID;
+	Timeout	: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	NodeHdl	: DWORD;
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF execute THEN
+	Done := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_UAnodeGetHandleMock_Success">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_UAnodeGetHandleMock_Success.start">
+      <LineId Id="17" Count="2" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

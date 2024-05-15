@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="FB_OPCUA_WorkOnNode_Test" Id="{f8275c91-08d9-4097-85fd-969f90b067cf}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_OPCUA_WorkOnNode_Test  EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	read	 				: FB_UAreadMock_BoolChangesToTrue;
+	write					: FB_UAwriteMock_SetBoolTrue;
+	nodeReleaseHandle		: FB_UAnodeReleaseHandleMock_Success;
+	nodeGetHandle			: FB_UAnodeGetHandleMock_Success;
+
+	readNode 				: FB_OPCUA_WorkOnNode(
+													iOPCUA_Write := write,			
+													iOPCUA_Read	:= read,				
+													iOPCUA_NodeReleaseHandle := nodeReleaseHandle,	
+													iOPCUA_NodeGetHandle :=  nodeGetHandle		
+													);
+	opcUAreadList_BOOL: ST_OPCUA_NodeVariablePair_BOOL := (clientvariable := booleanToRead, 
+															serverNodeIdentifier := 'booleantoread',
+															clientVariableInfo := __VARINFO(opcUAreadList_BOOL));
+	booleanToRead : BOOL;
+	booleanInfo : __SYSTEM.VAR_INFO := __VARINFO(readNode);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[variableShouldGetUpdatedWhenChanged();]]></ST>
+    </Implementation>
+    <Method Name="variableShouldGetUpdatedWhenChanged" Id="{fd3e4813-86ce-4fb4-9c27-b1d9ea091390}">
+      <Declaration><![CDATA[METHOD variableShouldGetUpdatedWhenChanged
+VAR
+	sessionCOnnectInfo 		: ST_UASessionConnectInfo;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('variableShouldGetUpdatedWhenChanged');
+	
+	
+	readNode.read(clientVariable := booleanToRead,
+					clientVariableAddress := ADR(booleanToRead),
+					serverNodeIdentifier := 'test',
+					nameSpaceLocationIdentifierEx := 'test',
+					ConnectionHdl := 11,
+					nNamespaceIndex := 11);
+	IF NOT readNode.busy THEN
+		assertEquals_BOOL(Expected := TRUE, Actual := booleanToRead, Message := 'Value not updated when changed');
+		TEST_FINISHED();
+	END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_OPCUA_WorkOnNode_Test">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OPCUA_WorkOnNode_Test.variableShouldGetUpdatedWhenChanged">
+      <LineId Id="5" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="51" Count="4" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="78" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
