@@ -185,11 +185,11 @@ END_CASE]]></ST>
     <Method Name="FB_init" Id="{c91b2b38-559f-4490-bb3d-4d027253fec9}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
-	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
-	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	iOPCUAconnect : I_OPCUA_Connect;
-	iOPCUAdisconnect : I_OPCUA_Disconnect;
-	iOPCUAgetNameSpaceIndex : I_OPCUA_GetNameSpaceIndex; 
+	bInitRetains					: BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode 					: BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	iOPCUAconnect 					: I_OPCUA_Connect;
+	iOPCUAdisconnect 				: I_OPCUA_Disconnect;
+	iOPCUAgetNameSpaceIndex 		: I_OPCUA_GetNameSpaceIndex; 
 END_VAR
 ]]></Declaration>
       <Implementation>

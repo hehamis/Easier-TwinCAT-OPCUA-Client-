@@ -38,7 +38,7 @@
     <Compile Include="POUs\FBs\FB_OPCUA_ClientConnection.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FBs\FB_OPCUA_ReadOrWriteNode.TcPOU">
+    <Compile Include="POUs\FBs\FB_OPCUA_WorkOnNode.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FBs\FB_ToggleHeartBeat.TcPOU">
@@ -65,10 +65,25 @@
     <Compile Include="POUs\ITFs\I_OPCUA_GetNameSpaceIndex.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\ITFs\I_OPCUA_NodeGetHandle.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\ITFs\I_OPCUA_NodeReleaseHandle.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\ITFs\I_OPCUA_Read.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\ITFs\I_OPCUA_WorkOnNode.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\ITFs\I_OPCUA_Write.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Unit tests\FB_OPCUA_ClientConnection_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Unit tests\FB_OPCUA_WorkOnNode_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Unit tests\Mocks\FB_UAconnectMock_Failure.TcPOU">
@@ -81,6 +96,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Unit tests\Mocks\FB_UAgetNameSpaceIndexMock_success.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Unit tests\Mocks\FB_UAnodeGetHandleMock_Success.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Unit tests\Mocks\FB_UAnodeReleaseHandleMock_Success.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Unit tests\Mocks\FB_UAreadMock_BoolChangesToTrue.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Unit tests\Mocks\FB_UAwriteMock_SetBoolTrue.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Unit tests\TEST_MAIN.TcPOU">

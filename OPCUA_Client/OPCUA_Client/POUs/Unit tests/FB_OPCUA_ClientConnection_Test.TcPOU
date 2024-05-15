@@ -16,13 +16,13 @@ errorShouldBeActiveIfConnectingFails();]]></ST>
     <Method Name="errorShouldBeActiveIfConnectingFails" Id="{1c941d56-b399-430b-850d-b8e299923506}">
       <Declaration><![CDATA[METHOD errorShouldBeActiveIfConnectingFails
 VAR
-	connect : FB_UAconnectMock_Failure;
-	disconnect : FB_UAdisconnectMock_success;
-	getNameSpaceIndex : FB_UAgetNameSpaceIndexMock_success;
-	connection : FB_OPCUA_ClientConnection(iOPCUAconnect := connect,
-										iOPCUAdisconnect := disconnect,
-										iOPCUAgetNameSpaceIndex := getNameSpaceIndex);
-	sessionCOnnectInfo : ST_UASessionConnectInfo;
+	connect 				: FB_UAconnectMock_Failure;
+	disconnect 				: FB_UAdisconnectMock_success;
+	getNameSpaceIndex 		: FB_UAgetNameSpaceIndexMock_success;
+	connection 				: FB_OPCUA_ClientConnection(iOPCUAconnect := connect,
+														iOPCUAdisconnect := disconnect,
+														iOPCUAgetNameSpaceIndex := getNameSpaceIndex);
+	sessionCOnnectInfo 		: ST_UASessionConnectInfo;
 END_VAR
 ]]></Declaration>
       <Implementation>
