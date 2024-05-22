@@ -46,6 +46,8 @@ VAR
 	writeBusy: BOOL;
 	writeError: BOOL;
 	writeErrorID: DWORD;
+	clientVarInfo : __SYSTEM.VAR_INFO;
+	pClientByteValue : POINTER TO BYTE;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -73,7 +75,7 @@ _iOPCUA_NodeGetHandle 	:= iOPCUA_NodeGetHandle 	;]]></ST>
 METHOD read : BOOL
 VAR_INPUT
 	{attribute 'anytypeclass' := 'ANY'}
-	clientVariable	: ANY;
+	//clientVariable	: ANY;
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
 	//clientVariableInfo	: __SYSTEM.VAR_INFO;
 	clientVariableAddress : PVOID;
@@ -123,14 +125,15 @@ END_VAR
 	
 2: 	(* UA_Read *)
 
-	dataAdd := ADR(clientVariable);
+	//dataAdd := ADR(clientVariable);
+	clientVarInfo := __VARINFO(clientVariableAddress);
 	_iOPCUA_Read.start(
 						Execute := TRUE,
 						ConnectionHdl := connectionHdl,
 						NodeHdl := nNodeHdl,
-						cbData := SIZEOF(clientVariable),//clientVariableInfo.BitSize,
+						cbData := clientVarInfo.BitSize,//SIZEOF(clientVariable),//clientVariableInfo.BitSize,
 						stNodeAddInfo 	:= stNodeAddInfo,
-						pVariable :=clientVariableAddress,//clientVariableInfo.ByteAddress,
+						pVariable := clientVariableAddress,//clientVariableInfo.ByteAddress,
 						Timeout := T#5S,
 						busy => readBusy,
 						error => readError,
@@ -142,7 +145,7 @@ END_VAR
 			_iOPCUA_Read.start( Execute := FALSE, 
 						ConnectionHdl := connectionHdl,
 						NodeHdl := nNodeHdl,
-						cbData := SIZEOF(clientVariable),//clientVariableInfo.BitSize,
+						cbData := clientVarInfo.BitSize,//SIZEOF(clientVariable),//clientVariableInfo.BitSize,
 						stNodeAddInfo 	:= stNodeAddInfo,
 						pVariable :=clientVariableAddress,//clientVariableInfo.ByteAddress,
 						Timeout := T#5S,
@@ -194,7 +197,7 @@ busy := Executing;]]></ST>
 METHOD write : BOOL
 VAR_INPUT
 	{attribute 'anytypeclass' := 'ANY'}
-	clientVariable	: ANY;
+	//clientVariable	: ANY;
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
 	//clientVariableInfo	: __SYSTEM.VAR_INFO;
 	clientVariableAddress	: PVOID;
@@ -209,9 +212,13 @@ END_VAR
 	
 	0:
 		error := FALSE;
-		IF clientVariable.pValue^ <> clientVariablePrev OR NOT firstTimeWrite THEN
+		clientVarInfo := __VARINFO(clientVariableAddress);
+		pClientByteValue := clientVariableAddress;
+		//MEMSET(ADR(clientByteValue), clientVarInfo.ByteAddress ,clientVarInfo.BitSize);
+		//IF clientVariable.pValue^ <> clientVariablePrev OR NOT firstTimeWrite THEN
+		IF pClientByteValue^ <> clientVariablePrev OR NOT firstTimeWrite THEN
 			Executing := TRUE;
-			clientVariablePrev := clientVariable.pValue^;
+			clientVariablePrev := pClientByteValue^;
 			writeStep := 1;
 		END_IF
 	
@@ -249,7 +256,7 @@ END_VAR
 							ConnectionHdl := connectionHdl,
 							NodeHdl := nNodeHdl,
 							stNodeAddInfo := stNodeAddInfo,
-							cbData := SIZEOF(clientVariable),//clientVariableInfo.BitSize,
+							cbData := clientVarInfo.BitSize,//SIZEOF(clientVariable),//clientVariableInfo.BitSize,
 							pVariable := clientVariableAddress,//clientVariableInfo.ByteAddress,
 							Timeout := T#5S,
 							busy => writeBusy,
@@ -262,7 +269,7 @@ END_VAR
 								ConnectionHdl := connectionHdl,
 								NodeHdl := nNodeHdl,
 								stNodeAddInfo := stNodeAddInfo,
-								cbData := SIZEOF(clientVariable), //clientVariableInfo.BitSize,
+								cbData := clientVarInfo.BitSize,//SIZEOF(clientVariable), //clientVariableInfo.BitSize,
 								pVariable := clientVariableAddress,//clientVariableInfo.ByteAddress,
 								Timeout := T#5S );
 
@@ -331,7 +338,9 @@ busy := Executing ;]]></ST>
       <LineId Id="204" Count="0" />
       <LineId Id="126" Count="2" />
       <LineId Id="131" Count="2" />
-      <LineId Id="59" Count="9" />
+      <LineId Id="59" Count="5" />
+      <LineId Id="262" Count="0" />
+      <LineId Id="65" Count="3" />
       <LineId Id="70" Count="0" />
       <LineId Id="188" Count="0" />
       <LineId Id="71" Count="0" />
@@ -362,7 +371,12 @@ busy := Executing ;]]></ST>
     <LineIds Name="FB_OPCUA_WorkOnNode.write">
       <LineId Id="25" Count="2" />
       <LineId Id="106" Count="0" />
-      <LineId Id="28" Count="1" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="204" Count="0" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="29" Count="0" />
       <LineId Id="120" Count="0" />
       <LineId Id="30" Count="3" />
       <LineId Id="35" Count="7" />

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="UA_NodeGetHandleWrapper" Id="{d32f359d-c4d0-4e45-8062-bdf901152801}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK UA_NodeGetHandleWrapper IMPLEMENTS I_OPCUA_NodeGetHandle
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	uaNodegethandle : UA_NodeGetHandle;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{c67e8e69-01af-43c8-b6df-46caeb4334bc}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute	: BOOL;
+	ConnectionHdl	: DWORD;
+	NodeID	: Tc3_PLCopen_OpcUa.ST_UANodeID;
+	Timeout	: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	NodeHdl	: DWORD;
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[uaNodegethandle(Execute := execute, 
+				connectionhdl := connectionhdl, 
+				nodeid := nodeid, 
+				timeout := timeout,
+				NodeHdl => NodeHdl,
+				Done => Done,
+				Busy => Busy,
+				Error => Error,
+				ErrorID => ErrorId);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="UA_NodeGetHandleWrapper">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="UA_NodeGetHandleWrapper.start">
+      <LineId Id="17" Count="0" />
+      <LineId Id="33" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

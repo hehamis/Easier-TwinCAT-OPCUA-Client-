@@ -8,7 +8,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	read	 				: FB_UAreadMock_BoolChangesToTrue;
-	write					: FB_UAwriteMock_SetBoolTrue;
+	write					: FB_UAwriteMock_Failure;
 	nodeReleaseHandle		: FB_UAnodeReleaseHandleMock_Success;
 	nodeGetHandle			: FB_UAnodeGetHandleMock_Success;
 
@@ -28,6 +28,16 @@ END_VAR
     <Implementation>
       <ST><![CDATA[variableShouldGetUpdatedWhenChanged();]]></ST>
     </Implementation>
+    <Method Name="errorShouldActivateIfWriteFails" Id="{bf873670-9bca-4c98-b864-5ffc353a5212}">
+      <Declaration><![CDATA[METHOD errorShouldActivateIfWriteFails
+VAR
+	sessionCOnnectInfo 		: ST_UASessionConnectInfo;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="variableShouldGetUpdatedWhenChanged" Id="{fd3e4813-86ce-4fb4-9c27-b1d9ea091390}">
       <Declaration><![CDATA[METHOD variableShouldGetUpdatedWhenChanged
 VAR
@@ -38,7 +48,7 @@ END_VAR
         <ST><![CDATA[TEST('variableShouldGetUpdatedWhenChanged');
 	
 	
-	readNode.read(clientVariable := booleanToRead,
+	readNode.read(//clientVariable := booleanToRead,
 					clientVariableAddress := ADR(booleanToRead),
 					serverNodeIdentifier := 'test',
 					nameSpaceLocationIdentifierEx := 'test',
@@ -52,6 +62,9 @@ END_VAR
     </Method>
     <LineIds Name="FB_OPCUA_WorkOnNode_Test">
       <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OPCUA_WorkOnNode_Test.errorShouldActivateIfWriteFails">
+      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_OPCUA_WorkOnNode_Test.variableShouldGetUpdatedWhenChanged">
       <LineId Id="5" Count="0" />

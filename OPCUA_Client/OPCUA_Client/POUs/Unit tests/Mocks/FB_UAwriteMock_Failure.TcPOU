@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
-  <POU Name="FB_UAwriteMock_SetBoolTrue" Id="{dd5fe2ba-512b-4b30-973b-0f2d77fac84c}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_UAwriteMock_SetBoolTrue IMPLEMENTS I_OPCUA_Write
+  <POU Name="FB_UAwriteMock_Failure" Id="{dd5fe2ba-512b-4b30-973b-0f2d77fac84c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UAwriteMock_Failure IMPLEMENTS I_OPCUA_Write
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
@@ -32,14 +32,17 @@ VAR_OUTPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[IF execute THEN
+	Error := TRUE;
+END_IF]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_UAwriteMock_SetBoolTrue">
+    <LineIds Name="FB_UAwriteMock_Failure">
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_UAwriteMock_SetBoolTrue.start">
+    <LineIds Name="FB_UAwriteMock_Failure.start">
       <LineId Id="19" Count="0" />
+      <LineId Id="37" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

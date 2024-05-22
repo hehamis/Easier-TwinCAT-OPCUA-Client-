@@ -6,7 +6,7 @@
     <Method Name="read" Id="{ad45e450-728a-4dff-95f3-1f192d808a48}">
       <Declaration><![CDATA[METHOD read : BOOL
 VAR_INPUT
-	clientVariable	: ANY;
+	//clientVariable	: ANY;
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
 	//clientVariableInfo	: __SYSTEM.VAR_INFO;
 	clientVariableAddress	: PVOID;
@@ -20,7 +20,7 @@ END_VAR
     <Method Name="write" Id="{8a67e288-1009-489b-a673-c75b19dfda2e}">
       <Declaration><![CDATA[METHOD write : BOOL
 VAR_INPUT
-	clientVariable	: ANY;
+	//clientVariable	: ANY;
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
 	//clientVariableInfo	: __SYSTEM.VAR_INFO;
 	clientVariableAddress	: PVOID;

@@ -53,6 +53,18 @@
     <Compile Include="POUs\FBs\Wrappers\UA_GetNameSpaceIndexWrapper.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FBs\Wrappers\UA_NodeGetHandleWrapper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Wrappers\UA_NodeReleaseHandleWrapper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Wrappers\UA_ReadWrapper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Wrappers\UA_WriteWrapper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\ITFs\I_OPCUA_ClientConnection.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -107,7 +119,7 @@
     <Compile Include="POUs\Unit tests\Mocks\FB_UAreadMock_BoolChangesToTrue.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Unit tests\Mocks\FB_UAwriteMock_SetBoolTrue.TcPOU">
+    <Compile Include="POUs\Unit tests\Mocks\FB_UAwriteMock_Failure.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Unit tests\TEST_MAIN.TcPOU">

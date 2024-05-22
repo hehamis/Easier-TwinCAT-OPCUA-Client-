@@ -31,15 +31,15 @@ VAR_OUTPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[uaGetNameSpaceIndex(Execute			:= ,
-                    ConnectionHdl	:= ,
-                    NamespaceUri	:= ,
-                    Timeout			:= ,
-					NamespaceIndex	=> ,
-                    Done			=> ,
-                    Busy			=> ,
-                    Error			=> ,
-                    ErrorID			=> );]]></ST>
+        <ST><![CDATA[uaGetNameSpaceIndex(Execute			:= Execute,
+                    ConnectionHdl	:= ConnectionHdl,
+                    NamespaceUri	:= Namespaceuri,
+                    Timeout			:= Timeout,
+					NamespaceIndex	=> NamespaceIndex,
+                    Done			=> Done,
+                    Busy			=> Busy,
+                    Error			=> Error,
+                    ErrorID			=> ErrorID);]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="UA_GetNameSpaceIndexWrapper">

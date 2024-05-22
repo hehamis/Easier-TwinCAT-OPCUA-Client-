@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="UA_WriteWrapper" Id="{c5574620-7228-43d8-a779-cd023918d3b1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK UA_WriteWrapper IMPLEMENTS I_OPCUA_Write
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	uaWrite : UA_Write;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{e36f055a-29cb-4751-a4e9-8075ddd205ec}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute	: BOOL;
+	ConnectionHdl	: DWORD;
+	NodeHdl	: DWORD;
+	stNodeAddInfo	: Tc3_PLCopen_OpcUa.ST_UANodeAdditionalInfo;
+	pVariable	: PVOID;
+	cbData	: UDINT;
+	Timeout	: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[uaWrite(Execute := execute,
+		 COnnectionhdl := connectionhdl, 
+		NodeHdl := nodehdl, 
+		stNodeAddInfo := stnodeaddinfo, 
+		pVariable := pvariable, 
+		cbdata := cbData, 
+		Timeout := timeout,
+		Done => DOne,
+		Busy => Busy,
+		Error => Error,
+		ErrorID => ErrorID
+		);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="UA_WriteWrapper">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="UA_WriteWrapper.start">
+      <LineId Id="19" Count="0" />
+      <LineId Id="37" Count="5" />
+      <LineId Id="44" Count="3" />
+      <LineId Id="43" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="UA_NodeReleaseHandleWrapper" Id="{6d74129d-b57f-4042-be40-2550de29caa1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK UA_NodeReleaseHandleWrapper IMPLEMENTS I_OPCUA_NodeReleaseHandle
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	uaNodeReleaseHandle : UA_NodeReleaseHandle;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="start" Id="{fc24c77a-3fe1-461f-81af-799c6aba19c7}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD start : BOOL
+VAR_INPUT
+	Execute	: BOOL;
+	ConnectionHdl	: DWORD;
+	NodeHdl	: DWORD;
+	Timeout	: TIME := DEFAULT_ADS_TIMEOUT;
+END_VAR
+VAR_OUTPUT
+	Done	: BOOL;
+	Busy	: BOOL;
+	Error	: BOOL;
+	ErrorID	: DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[uaNodeReleasehandle(Execute := execute, 
+					connectionhdl := connectionhdl, 
+					nodehdl := nodehdl, 
+					timeout := timeout,
+					Done => Done,
+					Busy => Busy,
+					Error => Error,
+					ErrorID => ErrorID);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="UA_NodeReleaseHandleWrapper">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="UA_NodeReleaseHandleWrapper.start">
+      <LineId Id="16" Count="0" />
+      <LineId Id="31" Count="6" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
