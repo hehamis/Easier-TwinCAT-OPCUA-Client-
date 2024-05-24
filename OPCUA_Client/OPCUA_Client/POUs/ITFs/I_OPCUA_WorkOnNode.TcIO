@@ -10,6 +10,7 @@ VAR_INPUT
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
 	//clientVariableInfo	: __SYSTEM.VAR_INFO;
 	clientVariableAddress	: PVOID;
+	clientVariableSize : UDINT;
 	serverNodeIdentifier	: STRING;
 	nameSpaceLocationIdentifierEx : STRING(MAX_STRING_LENGTH);
 	connectionHdl : DWORD;
@@ -24,6 +25,7 @@ VAR_INPUT
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
 	//clientVariableInfo	: __SYSTEM.VAR_INFO;
 	clientVariableAddress	: PVOID;
+	clientVariableSize : UDINT;
 	serverNodeIdentifier	: STRING;
 	nameSpaceLocationIdentifierEx : STRING(MAX_STRING_LENGTH);
 	connectionHdl : DWORD;

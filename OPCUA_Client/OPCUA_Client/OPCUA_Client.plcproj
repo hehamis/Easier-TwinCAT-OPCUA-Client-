@@ -21,6 +21,7 @@
     <ProjectVersion>0.1</ProjectVersion>
     <Author>Henri Hämäläinen</Author>
     <Description>Tools for utitilizing PLCopen OPCUA functionalities more conveniently</Description>
+    <CompilerDefines />
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="PlcTask.TcTTO">

@@ -10,7 +10,6 @@ VAR_OUTPUT
 END_VAR
 VAR
 
-	_iOPCUA_Read			: I_OPCUA_Read;
 	stNodeAddInfo			: ST_UANodeAdditionalInfo;
 	cbData_R				: UDINT;
 	
@@ -22,16 +21,23 @@ VAR
 	Executing : BOOL;
 	writeStep : INT;
 	(* Declarations for UA_Write *)
-	_iOPCUA_Write : I_OPCUA_Write; 
-	
-	(* Declarations for UA_NodeReleaseHandle *)
-	_iOPCUA_NodeReleaseHandle : I_OPCUA_NodeReleaseHandle;
-	
+	{IF defined (Test)}
+		_iOPCUA_Write : I_OPCUA_Write; 
+		(* Declarations for UA_NodeReleaseHandle *)
+		_iOPCUA_NodeReleaseHandle : I_OPCUA_NodeReleaseHandle;
+		_iOPCUA_NodeGetHandle : I_OPCUA_NodeGetHandle;
+		_iOPCUA_Read			: I_OPCUA_Read;
+	{ELSE}
+		_iOPCUA_Write : UA_WriteWrapper;
+		_iOPCUA_NodeReleaseHandle : UA_NOdeReleaseHandleWrapper;
+		_iOPCUA_NodeGetHandle : UA_NodeGetHandleWrapper;
+		_iOPCUA_Read			: UA_ReadWrapper;
+	{ END_IF}
 	(* Other declarations *) 
 	errorID : DWORD;	
 	clientVariablePrev : BYTE;
 	firstTimeWrite : BOOL;
-	_iOPCUA_NodeGetHandle : I_OPCUA_NodeGetHandle;
+	//_iOPCUA_NodeGetHandle : I_OPCUA_NodeGetHandle;
 	NodeID : ST_UANodeID;
 	nNodeHdl : DWORD;
 	NodeGetHandleBusy: BOOL;
@@ -57,17 +63,21 @@ END_VAR]]></Declaration>
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	iOPCUA_Write				: I_OPCUA_Write;
-	iOPCUA_Read					: I_OPCUA_Read;
-	iOPCUA_NodeReleaseHandle 	: I_OPCUA_NodeReleaseHandle;
-	iOPCUA_NodeGetHandle 		: I_OPCUA_NodeGetHandle;
+	{IF defined (Test)}
+		iOPCUA_Write				: I_OPCUA_Write;
+		iOPCUA_Read					: I_OPCUA_Read;
+		iOPCUA_NodeReleaseHandle 	: I_OPCUA_NodeReleaseHandle;
+		iOPCUA_NodeGetHandle 		: I_OPCUA_NodeGetHandle;
+	{END_IF}
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_iOPCUA_Write	:= iOPCUA_Write;		
-_iOPCUA_Read		:= iOPCUA_Read	;		
-_iOPCUA_NodeReleaseHandle := iOPCUA_NodeReleaseHandle;
-_iOPCUA_NodeGetHandle 	:= iOPCUA_NodeGetHandle 	;]]></ST>
+        <ST><![CDATA[{IF defined (Test)}
+	_iOPCUA_Write	:= iOPCUA_Write;		
+	_iOPCUA_Read		:= iOPCUA_Read	;		
+	_iOPCUA_NodeReleaseHandle := iOPCUA_NodeReleaseHandle;
+	_iOPCUA_NodeGetHandle 	:= iOPCUA_NodeGetHandle 	;
+{END_IF}]]></ST>
       </Implementation>
     </Method>
     <Method Name="read" Id="{03c3b3f3-09be-48e8-a71a-d9f38d3c1c07}">
@@ -79,6 +89,7 @@ VAR_INPUT
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
 	//clientVariableInfo	: __SYSTEM.VAR_INFO;
 	clientVariableAddress : PVOID;
+	clientVariableSize : UDINT;
 	serverNodeIdentifier	: STRING;
 	nameSpaceLocationIdentifierEx	: STRING(MAX_STRING_LENGTH);
 	ConnectionHdl	: DWORD;
@@ -131,7 +142,7 @@ END_VAR
 						Execute := TRUE,
 						ConnectionHdl := connectionHdl,
 						NodeHdl := nNodeHdl,
-						cbData := clientVarInfo.BitSize,//SIZEOF(clientVariable),//clientVariableInfo.BitSize,
+						cbData := clientVariableSize,//clientVarInfo.BitSize,//SIZEOF(clientVariable),//clientVariableInfo.BitSize,
 						stNodeAddInfo 	:= stNodeAddInfo,
 						pVariable := clientVariableAddress,//clientVariableInfo.ByteAddress,
 						Timeout := T#5S,
@@ -201,6 +212,7 @@ VAR_INPUT
 	(* VAR_INFO of the target variable (from GVL_OPC)*)
 	//clientVariableInfo	: __SYSTEM.VAR_INFO;
 	clientVariableAddress	: PVOID;
+	clientVariableSize : UDINT;
 	serverNodeIdentifier	: STRING;
 	nameSpaceLocationIdentifierEx	: STRING(MAX_STRING_LENGTH);
 	connectionHdl: DWORD;
@@ -256,7 +268,7 @@ END_VAR
 							ConnectionHdl := connectionHdl,
 							NodeHdl := nNodeHdl,
 							stNodeAddInfo := stNodeAddInfo,
-							cbData := clientVarInfo.BitSize,//SIZEOF(clientVariable),//clientVariableInfo.BitSize,
+							cbData := clientVariableSize,//clientVarInfo.BitSize,//SIZEOF(clientVariable),//clientVariableInfo.BitSize,
 							pVariable := clientVariableAddress,//clientVariableInfo.ByteAddress,
 							Timeout := T#5S,
 							busy => writeBusy,
@@ -318,8 +330,10 @@ busy := Executing ;]]></ST>
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_OPCUA_WorkOnNode.FB_init">
+      <LineId Id="26" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="12" Count="2" />
+      <LineId Id="27" Count="0" />
     </LineIds>
     <LineIds Name="FB_OPCUA_WorkOnNode.read">
       <LineId Id="23" Count="1" />

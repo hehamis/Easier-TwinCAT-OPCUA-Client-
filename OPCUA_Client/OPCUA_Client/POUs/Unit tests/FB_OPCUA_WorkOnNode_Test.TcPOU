@@ -50,6 +50,7 @@ END_VAR
 	
 	readNode.read(//clientVariable := booleanToRead,
 					clientVariableAddress := ADR(booleanToRead),
+					clientVariableSize := SIZEOF(booleanToRead),
 					serverNodeIdentifier := 'test',
 					nameSpaceLocationIdentifierEx := 'test',
 					ConnectionHdl := 11,
@@ -71,7 +72,9 @@ END_VAR
       <LineId Id="34" Count="0" />
       <LineId Id="57" Count="0" />
       <LineId Id="29" Count="0" />
-      <LineId Id="51" Count="4" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="52" Count="3" />
       <LineId Id="77" Count="0" />
       <LineId Id="76" Count="0" />
       <LineId Id="79" Count="0" />

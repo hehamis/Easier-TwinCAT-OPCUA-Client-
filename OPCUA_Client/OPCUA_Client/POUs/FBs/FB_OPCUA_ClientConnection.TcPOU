@@ -14,12 +14,21 @@ END_VAR
 VAR
 	nameSpaceLocationIdentifierEx : STRING(MAX_STRING_LENGTH); 
 	NamespaceUriEx : STRING(MAX_STRING_LENGTH); 
-	_iOPCUA_Connect			: I_OPCUA_COnnect;
-	SessionConnectInfoEx	: ST_UASessionConnectInfo;
-	_iOPCUA_GetNameSpaceIndex 	: I_OPCUA_GetNameSpaceIndex;
 	
-	(* Declarations for disconnect*)
-	_iOPCUA_Disconnect		: I_OPCUA_Disconnect;
+	{IF defined (Test)}	
+		_iOPCUA_Connect				: I_OPCUA_COnnect;
+		_iOPCUA_GetNameSpaceIndex 	: I_OPCUA_GetNameSpaceIndex;
+		_iOPCUA_Disconnect			: I_OPCUA_Disconnect;
+	{ELSE}
+		_iOPCUA_Connect				: UA_ConnectWrapper;		
+		_iOPCUA_GetNameSpaceIndex 	: UA_GetNameSpaceIndexWrapper;
+		_iOPCUA_Disconnect			: UA_DisconnectWrapper;
+	{END_IF}
+		
+	SessionConnectInfoEx	: ST_UASessionConnectInfo;
+	
+	
+
 	
 	(* Other declarations *) 
 	writeStep : INT;
@@ -187,15 +196,19 @@ END_CASE]]></ST>
 VAR_INPUT
 	bInitRetains					: BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode 					: BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	iOPCUAconnect 					: I_OPCUA_Connect;
-	iOPCUAdisconnect 				: I_OPCUA_Disconnect;
-	iOPCUAgetNameSpaceIndex 		: I_OPCUA_GetNameSpaceIndex; 
+	{IF defined (Test)}
+		iOPCUAconnect 					: I_OPCUA_Connect;
+		iOPCUAdisconnect 				: I_OPCUA_Disconnect;
+		iOPCUAgetNameSpaceIndex 		: I_OPCUA_GetNameSpaceIndex; 
+	{ END_IF }
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_iOPCUA_Connect := iOPCUAconnect;
-_iOPCUA_Disconnect := iOPCUAdisconnect;
-_iOPCUA_GetNameSpaceIndex := iOPCUAgetNameSpaceIndex;]]></ST>
+        <ST><![CDATA[{IF defined (Test)}
+	_iOPCUA_Connect := iOPCUAconnect;
+	_iOPCUA_Disconnect := iOPCUAdisconnect;
+	_iOPCUA_GetNameSpaceIndex := iOPCUAgetNameSpaceIndex;
+{ END_IF }]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_OPCUA_ClientConnection">
@@ -252,8 +265,10 @@ _iOPCUA_GetNameSpaceIndex := iOPCUAgetNameSpaceIndex;]]></ST>
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_OPCUA_ClientConnection.FB_init">
+      <LineId Id="23" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="11" Count="1" />
+      <LineId Id="24" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
