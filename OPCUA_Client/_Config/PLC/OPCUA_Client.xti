@@ -1,6 +1,16 @@
 <?xml version="1.0"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.22" ClassName="CNestedPlcProjDef">
-	<Project GUID="{D40FCD3C-2F01-4514-A0FA-D5F106AAB6AC}" Name="OPCUA_Client" PrjFilePath="..\..\OPCUA_Client\OPCUA_Client.plcproj" TmcFilePath="..\..\OPCUA_Client\OPCUA_Client.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.22" ClassName="CNestedPlcProjDef" TcProjectVariant="Test">
+	<Project GUID="{D40FCD3C-2F01-4514-A0FA-D5F106AAB6AC}" Name="OPCUA_Client" PrjFilePath="..\..\OPCUA_Client\OPCUA_Client.plcproj" TmcFilePath="..\..\OPCUA_Client\OPCUA_Client.tmc" EnableImplicitDefines="true" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+		<ProjectVariant PvUseDefine="true">
+			<Variant>
+				<Name>NoTest</Name>
+				<Defines/>
+			</Variant>
+			<Variant>
+				<Name>Test</Name>
+				<Defines></Defines>
+			</Variant>
+		</ProjectVariant>
 		<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="OPCUA_Client\OPCUA_Client.tmc">
 			<Name>OPCUA_Client Instance</Name>
 			<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
