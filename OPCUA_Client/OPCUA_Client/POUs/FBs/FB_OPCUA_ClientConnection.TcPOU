@@ -103,7 +103,7 @@ CASE connectStep OF
 				Error			:= TRUE;
 				ErrorID		:= connectErrorID;
 				ConnectionHdl	:= 0;
-				writeStep		:= 0; (* idle *)
+				connectStep		:= 0; (* idle *)
 			END_IF
 		END_IF
 	1:
@@ -172,9 +172,8 @@ END_VAR]]></Declaration>
 			IF NOT disconnectError THEN
 				(* session closed *)
 				firstTimeWrite := TRUE;
-	//			firstTimeWrite := FALSE;
 				Executing := FALSE;
-//				clientVariablePrev := clientVariable.pValue^;
+				ConnectionHdl	:= 0; //ADDED
 				disconnectStep 		:= 0; (* idle *)
 				IF NOT error THEN 
 					disconnectDone := TRUE;
@@ -182,10 +181,9 @@ END_VAR]]></Declaration>
 				END_IF
 			ELSE
 				error			:= TRUE;
-				//lastErrorStep := 6;
 				errorID		:= disconnectErrorID;
-				//writeStep 			:= 0; (* idle *)
 				connectionHdl	:= 0;
+				disconnectStep 		:= 0; 
 			END_IF
 		END_IF	
 END_CASE]]></ST>
@@ -259,9 +257,16 @@ END_VAR
       <LineId Id="50" Count="0" />
       <LineId Id="49" Count="0" />
       <LineId Id="45" Count="0" />
-      <LineId Id="14" Count="8" />
+      <LineId Id="14" Count="3" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="21" Count="1" />
       <LineId Id="40" Count="0" />
-      <LineId Id="23" Count="9" />
+      <LineId Id="23" Count="3" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="31" Count="1" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_OPCUA_ClientConnection.FB_init">

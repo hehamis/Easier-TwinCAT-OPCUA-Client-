@@ -42,9 +42,6 @@
     <Compile Include="POUs\FBs\FB_OPCUA_WorkOnNode.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FBs\FB_ToggleHeartBeat.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\FBs\Wrappers\UA_ConnectWrapper.TcPOU">
       <SubType>Code</SubType>
     </Compile>

@@ -17,7 +17,6 @@ VAR
 	nErrorID	: DWORD;
 	dataAdd : PVOID;
 	lastErrorStep: INT;
-	readToggle : FB_ToggleHeartBeat;
 	Executing : BOOL;
 	writeStep : INT;
 	(* Declarations for UA_Write *)
@@ -226,6 +225,7 @@ END_VAR
 		error := FALSE;
 		clientVarInfo := __VARINFO(clientVariableAddress);
 		pClientByteValue := clientVariableAddress;
+		nNodeHdl := 0;
 		//MEMSET(ADR(clientByteValue), clientVarInfo.ByteAddress ,clientVarInfo.BitSize);
 		//IF clientVariable.pValue^ <> clientVariablePrev OR NOT firstTimeWrite THEN
 		IF pClientByteValue^ <> clientVariablePrev OR NOT firstTimeWrite THEN
@@ -289,7 +289,7 @@ END_VAR
 				writeStep := 3;
 		  ELSE
 			//Executing := FALSE;
-			error := TRUE;
+			//error := TRUE;
 			errorID := writeErrorID;
 			writeStep := 3;
 		  END_IF
@@ -387,6 +387,7 @@ busy := Executing ;]]></ST>
       <LineId Id="106" Count="0" />
       <LineId Id="176" Count="0" />
       <LineId Id="204" Count="0" />
+      <LineId Id="219" Count="0" />
       <LineId Id="175" Count="0" />
       <LineId Id="28" Count="0" />
       <LineId Id="190" Count="0" />
