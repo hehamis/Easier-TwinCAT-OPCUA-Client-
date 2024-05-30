@@ -53,6 +53,7 @@ VAR
 	writeErrorID: DWORD;
 	clientVarInfo : __SYSTEM.VAR_INFO;
 	pClientByteValue : POINTER TO BYTE;
+	ConnectionHdlPrev: DWORD;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -96,7 +97,14 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[CASE istate OF
+        <ST><![CDATA[
+IF ConnectionHdl <> ConnectionHdlPrev THEN
+	istate := 0;
+	ConnectionHdlPrev := ConnectionHdl;
+	error := FALSE;
+END_IF
+
+CASE istate OF
 0: 
 		error := FALSE;
 		nNodeHdl :=0;
@@ -219,7 +227,15 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[CASE writeStep OF
+        <ST><![CDATA[
+IF ConnectionHdl <> ConnectionHdlPrev THEN
+	writeStep := 0;
+	ConnectionHdlPrev := ConnectionHdl;
+	error := FALSE;
+	firstTimeWrite := FALSE;
+END_IF
+
+CASE writeStep OF
 	
 	0:
 		error := FALSE;
@@ -336,6 +352,12 @@ busy := Executing ;]]></ST>
       <LineId Id="27" Count="0" />
     </LineIds>
     <LineIds Name="FB_OPCUA_WorkOnNode.read">
+      <LineId Id="279" Count="0" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="280" Count="0" />
+      <LineId Id="282" Count="1" />
+      <LineId Id="281" Count="0" />
+      <LineId Id="278" Count="0" />
       <LineId Id="23" Count="1" />
       <LineId Id="175" Count="0" />
       <LineId Id="160" Count="0" />
@@ -383,6 +405,8 @@ busy := Executing ;]]></ST>
       <LineId Id="155" Count="0" />
     </LineIds>
     <LineIds Name="FB_OPCUA_WorkOnNode.write">
+      <LineId Id="236" Count="5" />
+      <LineId Id="234" Count="1" />
       <LineId Id="25" Count="2" />
       <LineId Id="106" Count="0" />
       <LineId Id="176" Count="0" />
