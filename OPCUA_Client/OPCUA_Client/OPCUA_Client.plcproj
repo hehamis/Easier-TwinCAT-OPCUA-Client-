@@ -27,15 +27,6 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\DUTs\ST_OPCUA_NodeVariablePair_BOOL.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\DUTs\ST_OPCUA_NodeVariablePair_INT.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\DUTs\ST_OPCUA_NodeVariablePair_STRING.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\FBs\FB_OPCUA_ClientConnection.TcPOU">
       <SubType>Code</SubType>
     </Compile>

@@ -18,9 +18,6 @@ VAR
 													iOPCUA_NodeReleaseHandle := nodeReleaseHandle,	
 													iOPCUA_NodeGetHandle :=  nodeGetHandle		
 													);
-	opcUAreadList_BOOL: ST_OPCUA_NodeVariablePair_BOOL := (clientvariable := booleanToRead, 
-															serverNodeIdentifier := 'booleantoread',
-															clientVariableInfo := __VARINFO(opcUAreadList_BOOL));
 	booleanToRead : BOOL;
 	booleanInfo : __SYSTEM.VAR_INFO := __VARINFO(readNode);
 END_VAR

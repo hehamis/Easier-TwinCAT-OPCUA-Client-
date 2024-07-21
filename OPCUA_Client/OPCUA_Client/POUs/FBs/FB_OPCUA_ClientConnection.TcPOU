@@ -31,7 +31,6 @@ VAR
 
 	
 	(* Other declarations *) 
-	writeStep : INT;
 	errorID : DWORD;	
 	executing : BOOL;
 	firstTimeWrite : BOOL;

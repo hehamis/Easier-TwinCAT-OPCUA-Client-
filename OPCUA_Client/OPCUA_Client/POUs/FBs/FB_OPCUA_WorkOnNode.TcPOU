@@ -15,7 +15,6 @@ VAR
 	
 	iState		: INT;
 	nErrorID	: DWORD;
-	dataAdd : PVOID;
 	lastErrorStep: INT;
 	Executing : BOOL;
 	writeStep : INT;
